@@ -1,0 +1,85 @@
+<html>
+  <style>
+
+    body {
+        font-size: 40px;
+        color: white;
+        font-weight: 600;
+    }
+
+    #info-message {
+      visibility: hidden;
+    }
+
+    
+  </style>
+  <head>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/obs-websocket-js@5.0.2/dist/obs-ws.min.js"></script>
+  </head>
+  <body>
+    <div id="info-message"></div>
+    <script type="text/javascript">
+
+      const params = (new URL(document.location)).searchParams
+      const channel = params.get("channel") || "deciider" // Канал для подключения к чату
+      const port = params.get("port") || "4455" // Порт для OBS WS
+      const password = params.get("password") || undefined // Пароль для OBS WS
+      const inputName = params.get("input") || "Звук раб. стола" // Название аудио источника
+      const track = params.get("track") || "2" // Twitch дорожка
+
+      const infomsg = document.getElementById("info-message")
+
+
+      async function main() {
+        const obs = new OBSWebSocket()
+        await obs.connect('ws://127.0.0.1:'+port, password, {rpcVersion: 1});
+
+        ComfyJS.onCommand = ( user, command, message, flags, self, extra ) => {
+          console.log(message)
+          console.log(user)
+          if (flags.broadcaster || flags.mod || user==="declider" ) {
+            console.log(command)
+            if (command === "vodmute") {
+              vod_track(obs, false)
+            } else if (command === "vodunmute") {
+              vod_track(obs, true)
+            }
+          }
+           
+        }
+        ComfyJS.Init( channel );
+      }
+
+      main()
+
+
+      function show_message(text) {
+        infomsg.innerText = text
+        infomsg.style.visibility = "visible"
+
+        setTimeout(function() {
+          infomsg.style.visibility = "hidden"
+        }, 5000)
+      }
+ 
+
+      async function vod_track(obs, state) { // false - вырубить, true - врубить
+
+        let inputAudioTracks = {}
+        inputAudioTracks[track] = state
+
+        let inputs = await obs.call("SetInputAudioTracks", {
+          inputName: decodeURIComponent(inputName), 
+          inputAudioTracks: inputAudioTracks
+        })
+
+        let data = await obs.call("GetInputAudioTracks", {inputName: decodeURIComponent(inputName)})
+        console.log(data)
+        show_message("track status: "+state)
+      }
+
+    </script>
+  </body>
+</html>
