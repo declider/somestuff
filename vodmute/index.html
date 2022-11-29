@@ -76,7 +76,12 @@
 
         navigator.clipboard.writeText(text.slice(0, -1))
 
-        alert("Ссылка для OBS скопирована!")
+        if (channel !== "") {
+          alert("Не указан канал.")
+        } else {
+          navigator.clipboard.writeText(text.slice(0, -1))
+          alert("Ссылка для OBS скопирована!")
+        }
       }
     </script>
     
