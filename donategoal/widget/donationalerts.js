@@ -21,7 +21,7 @@ async function startDA() {
     })
 
     centrifugeDA.on('connect', (e) => {
-        console.log(e)
+        console.log("Подключен DonationAlerts")
         centrifugeDA.subscribe('$alerts:donation_'+daid, message => {
             let sum = message.data.amount_in_user_currency
             console.log(message)
