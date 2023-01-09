@@ -13,9 +13,7 @@ async function getTokenDP() {
             access_token: dptoken
         }),
         headers: {
-            "Access-Control-Allow-Headers": "*", // this will allow all CORS requests
-            "Access-Control-Allow-Methods": 'OPTIONS,POST,GET', // this states the allowed methods
-            "Content-Type": "application/json" // this shows the expected content type
+            "Content-Type": "application/json"
         }
     })
     return (await res.json()).token
@@ -28,7 +26,9 @@ async function startDP() {
     let id = await getUserId()
 
     centrifugeDP.subscribe("$public:"+id, function (message) {
-        console.log(message)
+        console.log("message",message)
+        let sum = message.data.notification.vars.sum
+        add_sum(sum)
     });
 
     centrifugeDP.on('error', (e) => {
