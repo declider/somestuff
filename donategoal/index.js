@@ -7,7 +7,8 @@ async function auth() {
         }),
         headers: {
             'Content-Type': 'application/json'
-        }
+        },
+        mode: "cors"
     })
     const data = await result.json()
     return data
