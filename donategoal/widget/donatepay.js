@@ -1,6 +1,7 @@
 async function getUserId() {
     let res = await fetch('https://donatepay.ru/api/v1/user?access_token='+dptoken, {
-        method: 'get'
+        method: 'get',
+        mode: 'cors'
     })
     return (await res.json()).data.id
 }
@@ -14,7 +15,8 @@ async function getTokenDP() {
         }),
         headers: {
             "Content-Type": "application/json"
-        }
+        },
+        mode: 'cors'
     })
     return (await res.json()).token
 }
