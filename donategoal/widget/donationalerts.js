@@ -1,6 +1,9 @@
 async function getTokenDA() {
     let res = await fetch('https://www.donationalerts.com/api/v1/user/oauth', {
-        method: 'get'
+        method: 'get',
+        headers: {
+            "Authorization": "Bearer "+datoken
+        }
     })
     let socket_connection_token = (await res.json()).data.socket_connection_token
     return socket_connection_token
