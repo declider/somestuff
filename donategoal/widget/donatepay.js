@@ -1,28 +1,15 @@
-async function getUserId() {
-    let res = await fetch('https://donatepay.ru/api/v1/user?access_token='+dptoken, {
+async function getDPData() {
+    let res = await fetch('donategoalforhuman.deta.dev/dp?apikey='+dptoken, {
         method: 'get'
     })
-    return (await res.json()).data.id
+    return await res.json()
 }
-
-
-async function getTokenDP() {
-    let res = await fetch('https://donatepay.ru/api/v2/socket/token', {
-        method: 'post',
-        body: JSON.stringify({
-            access_token: dptoken
-        })
-    })
-    return (await res.json()).token
-}
-
 
 async function startDP() {
-    centrifugeDP.setToken(await getTokenDP())
+    let data = await getDPData()
+    centrifugeDP.setToken(data.token)
 
-    let id = await getUserId()
-
-    centrifugeDP.subscribe("$public:"+id, function (message) {
+    centrifugeDP.subscribe("$public:"+data.id, function (message) {
         console.log("message",message)
         let sum = message.data.notification.vars.sum
         add_sum(sum)
