@@ -6,13 +6,14 @@ async function getTokenDA() {
             "Authorization": "Bearer "+datoken
         }
     })
-
-    return (await res.json()).data.socket_connection_token
+    let socket_connection_token = (await res.json()).data.socket_connection_token
+    return socket_connection_token
 }
 
 
 async function startDA() {
-    centrifugeDA.setToken(await getTokenDA())
+    let socket_connection_token = await getTokenDA()
+    centrifugeDA.setToken(socket_connection_token)
 
     centrifugeDA.on('error', (e) => {
         console.log('error', e)
@@ -22,10 +23,11 @@ async function startDA() {
         console.log('subscribe', e)
     })
 
-    centrifugeDA.on('connect', async function(context) {
-        let clientID = context.client
-        centrifugeDA.subscribe('$alerts:donation_'+clientID, message => {
-            console.log(message)
+    centrifugeDA.on('connect', (e) => {
+        console.log(e)
+        centrifugeDA.subscribe('$alerts:donation_'+daid, message => {
+            let sum = message.data.amount_in_user_currency
+            add_sum(sum)
         })
     })
 
