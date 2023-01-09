@@ -1,6 +1,9 @@
 async function getDAData() {
-    let res = await fetch('https://donategoalforhuman.deta.dev/dasocket?token='+datoken, {
-        method: 'get'
+    let res = await fetch('https://donategoalforhuman.deta.dev/dasocket?token='+dptoken, {
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
     return (await res.json()).socket_connection_token
 }
@@ -21,6 +24,7 @@ async function startDA() {
         console.log(e)
         centrifugeDA.subscribe('$alerts:donation_'+daid, message => {
             let sum = message.data.amount_in_user_currency
+            console.log(message)
             add_sum(sum)
         })
     })
