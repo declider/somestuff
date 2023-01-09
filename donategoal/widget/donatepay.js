@@ -18,7 +18,9 @@ async function getTokenDP() {
             access_token: dptoken
         }),
         headers: {
-            "Content-Type": "application/json"
+            "Access-Control-Allow-Headers": "*", // this will allow all CORS requests
+            "Access-Control-Allow-Methods": 'OPTIONS,POST,GET', // this states the allowed methods
+            "Content-Type": "application/json" // this shows the expected content type
         }
     })
     return (await res.json()).token
