@@ -10,8 +10,8 @@ async function startDP() {
     centrifugeDP.setToken(data.token)
 
     centrifugeDP.subscribe("$public:"+data.id, function (message) {
-        console.log("message",message)
         let sum = message.data.notification.vars.sum
+        console.log(message)
         add_sum(sum)
     });
 
@@ -25,6 +25,7 @@ async function startDP() {
 
     centrifugeDP.on('connect', (e) => {
         console.log(e)
+        console.log("Подключен DonatePay")
     })
 
     // Метод фактического подключения к серверу
