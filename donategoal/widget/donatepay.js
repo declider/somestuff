@@ -2,8 +2,6 @@ async function getUserId() {
     let res = await fetch('https://donatepay.ru/api/v1/user?access_token='+dptoken, {
         method: 'get',
         headers: {
-            "Access-Control-Allow-Headers": "*", // this will allow all CORS requests
-            "Access-Control-Allow-Methods": 'OPTIONS,POST,GET', // this states the allowed methods
             "Content-Type": "application/json" // this shows the expected content type
         }
     })
