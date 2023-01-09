@@ -3,7 +3,9 @@ async function getTokenDA() {
         method: 'get',
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer "+datoken
+            "Authorization": "Bearer "+datoken,
+            'Access-Control-Allow-Origin':'*',
+            'Access-Control-Allow-Methods':'GET'
         }
     })
     let socket_connection_token = (await res.json()).data.socket_connection_token
