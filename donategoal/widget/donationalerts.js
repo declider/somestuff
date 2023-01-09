@@ -1,18 +1,13 @@
-async function getTokenDA() {
-    let res = await fetch('https://www.donationalerts.com/api/v1/user/oauth', {
-        method: 'get',
-        headers: {
-            "Authorization": "Bearer "+datoken
-        }
+async function getDAData() {
+    let res = await fetch('donategoalforhuman.deta.dev/dasocket?token='+dptoken, {
+        method: 'get'
     })
-    let socket_connection_token = (await res.json()).data.socket_connection_token
-    return socket_connection_token
+    return (await res.json()).socket_connection_token
 }
 
 
 async function startDA() {
-    let socket_connection_token = await getTokenDA()
-    centrifugeDA.setToken(socket_connection_token)
+    centrifugeDA.setToken(await getDAData())
 
     centrifugeDA.on('error', (e) => {
         console.log('error', e)
