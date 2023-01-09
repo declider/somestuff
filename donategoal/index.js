@@ -1,28 +1,19 @@
 async function auth() {
     
-    const result = await fetch('https://declider.deta.dev/donategoalforhuman', {
-        method: "POST",
-        body: JSON.stringify({
-            "code":code
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        mode: "cors"
+    let res = await fetch('donategoalforhuman.deta.dev/da?code='+code, {
+        method: "get"
     })
-    const data = await result.json()
-    return data
+    return await res.json()
     
 }
 
 let url = new URL("https://declider.github.io/somestuff/donategoal/widget/widget.html")
 
 let params = (new URL(document.location)).searchParams
-const code = params.get("code") || undefined
+let code = params.get("code") || undefined
 
 if(code!==undefined) {
     auth().then(data => {
-        console.log(data)
         url.searchParams.set("daid", data["id"])
         url.searchParams.set("datoken", data["token"])
         
