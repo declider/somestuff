@@ -34,5 +34,7 @@ async function startDA() {
 
 
 if(datoken&&daid){
+    console.log("2")
     startDA()
+    console.log("3")
 }
