@@ -1,5 +1,5 @@
 async function getDAData() {
-    let res = await fetch('https://donategoalforhuman.deta.dev/dasocket?token='+dptoken, {
+    let res = await fetch('https://donategoalforhuman.deta.dev/dasocket?token='+datoken, {
         method: 'get',
         headers: {
             'Content-Type': 'application/json'
