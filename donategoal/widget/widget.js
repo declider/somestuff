@@ -134,5 +134,3 @@ function clearStorage() {
     window.localStorage.clear()
     loadStorage()
 }
-
-
